@@ -1,0 +1,172 @@
+{
+    "code": 0,
+    "data": {
+        "tracks": [
+            {
+                "id": "bodhi_theme",
+                "title": "\u83e9\u63d0\u82d1\u4e3b\u9898\u66f2",
+                "subtitle": "\u91d1\u5149\u666e\u7167\u00b7\u5bfa\u9662\u5e84\u4e25",
+                "duration": 177,
+                "genre": "\u4e3b\u9898",
+                "license": "\u9879\u76ee\u539f\u521b",
+                "icon": "\ud83e\udeb7",
+                "color": "#c9a05c",
+                "description": "\u83e9\u63d0\u82d1\u4e13\u5c5e\u4e3b\u9898\u97f3\u4e50\uff0c\u91d1\u5149\u666e\u7167\u611f\uff0c\u4f5c\u4e3a\u5f00\u573a\u51a5\u60f3\u6700\u9002\u5b9c\u3002",
+                "url": "/meditation/bodhi_theme.mp3"
+            },
+            {
+                "id": "bodhi_garden",
+                "title": "\u83e9\u63d0\u82d1",
+                "subtitle": "\u82d1\u4e2d\u6e05\u96c5\u00b7\u4e07\u7f18\u6f84\u5b9a",
+                "duration": 171,
+                "genre": "\u7985\u610f",
+                "license": "\u9879\u76ee\u539f\u521b",
+                "icon": "\ud83c\udf3f",
+                "color": "#7BA686",
+                "description": "\u8d70\u5728\u83e9\u63d0\u82d1\u7684\u5c0f\u5f84\u4e0a\uff0c\u4e07\u7f18\u6f84\u5b9a\uff0c\u6700\u9002\u5408\u5348\u540e\u51a5\u60f3\u3002",
+                "url": "/meditation/bodhi_garden.mp3"
+            },
+            {
+                "id": "bodhi_light",
+                "title": "\u83e9\u63d0\u82d1\u00b7\u8f7b\u97f3\u4e50",
+                "subtitle": "\u8f7b\u67d4\u7985\u610f\u00b7\u5fc3\u5883\u6e05\u660e",
+                "duration": 195,
+                "genre": "\u8f7b\u7985",
+                "license": "\u9879\u76ee\u539f\u521b",
+                "icon": "\ud83e\udeb7",
+                "color": "#D4BC8A",
+                "description": "\u8f7b\u67d4\u7248\u83e9\u63d0\u82d1\u4e3b\u9898\uff0c\u66f4\u9002\u5408\u957f\u65f6\u95f4\u7985\u4fee\u966a\u4f34\u3002",
+                "url": "/meditation/bodhi_light.mp3"
+            },
+            {
+                "id": "bodhi_crossing",
+                "title": "\u83e9\u63d0\u82d1\u00b7\u6e21\u5c18\u7f18",
+                "subtitle": "\u6e21\u8fc7\u5c18\u7f18\u00b7\u8fd4\u7167\u672c\u5fc3",
+                "duration": 219,
+                "genre": "\u7985\u609f",
+                "license": "\u9879\u76ee\u539f\u521b",
+                "icon": "\ud83d\udef6",
+                "color": "#3D5A80",
+                "description": "\u8c61\u5f81\u6e21\u8fc7\u7ea2\u5c18\u7f20\u7f1a\uff0c\u56de\u5f52\u672c\u5fc3\u6e05\u51c0\u7684\u65cb\u5f8b\u3002",
+                "url": "/meditation/bodhi_crossing.mp3"
+            },
+            {
+                "id": "palace_dawn",
+                "title": "\u5b9d\u6bbf\u6668\u66e6",
+                "subtitle": "\u6668\u949f\u521d\u54cd\u00b7\u4f5b\u5149\u521d\u4e34",
+                "duration": 168,
+                "genre": "\u6668\u4fee",
+                "license": "\u9879\u76ee\u539f\u521b",
+                "icon": "\ud83c\udf05",
+                "color": "#E89B5C",
+                "description": "\u6668\u66e6\u65f6\u5206\u5b9d\u6bbf\u521d\u5f00\u7684\u5e84\u4e25\u666f\u8c61\uff0c\u6700\u9002\u5408\u6e05\u6668\u7b2c\u4e00\u5750\u3002",
+                "url": "/meditation/palace_dawn.mp3"
+            },
+            {
+                "id": "zen_sit",
+                "title": "\u7985\u5750",
+                "subtitle": "\u7ed3\u8dcf\u8dba\u5750\u00b7\u8eab\u5fc3\u5b89\u4f4f",
+                "duration": 156,
+                "genre": "\u6b63\u5ff5",
+                "license": "\u9879\u76ee\u539f\u521b",
+                "icon": "\ud83e\uddd8",
+                "color": "#5A7C65",
+                "description": "\u7eaf\u51c0\u7684\u7985\u5750\u97f3\u4e50\uff0c\u5f15\u5bfc\u8eab\u5fc3\u5feb\u901f\u5b89\u4f4f\u4e8e\u5f53\u4e0b\u3002",
+                "url": "/meditation/zen_sit.mp3"
+            },
+            {
+                "id": "zen_mind",
+                "title": "\u7985\u610f",
+                "subtitle": "\u4e07\u8c61\u7686\u7985\u00b7\u5904\u5904\u662f\u9053\u573a",
+                "duration": 192,
+                "genre": "\u7985\u610f",
+                "license": "\u9879\u76ee\u539f\u521b",
+                "icon": "\u262f\ufe0f",
+                "color": "#8A8A8A",
+                "description": "\u5728\u55a7\u56a3\u4e2d\u4e5f\u80fd\u542c\u89c1\u7684\u5185\u5fc3\u9759\u9ed8\uff0c\u8ba9\u7985\u610f\u6d41\u6dcc\u3002",
+                "url": "/meditation/zen_mind.mp3"
+            },
+            {
+                "id": "crystal_moon",
+                "title": "\u7409\u7483\u6708",
+                "subtitle": "\u6708\u5149\u7409\u7483\u00b7\u7167\u89c1\u4e94\u8574",
+                "duration": 211,
+                "genre": "\u7985\u97f5",
+                "license": "\u9879\u76ee\u539f\u521b",
+                "icon": "\ud83c\udf15",
+                "color": "#a3c5ab",
+                "description": "\u5982\u6708\u5149\u900f\u8fc7\u7409\u7483\u822c\u6e05\u6f88\u7684\u65cb\u5f8b\uff0c\u7167\u89c1\u4e94\u8574\u7686\u7a7a\u3002",
+                "url": "/meditation/crystal_moon.mp3"
+            },
+            {
+                "id": "great_compassion",
+                "title": "\u5927\u60b2\u5492",
+                "subtitle": "\u89c2\u97f3\u5927\u60b2\u00b7\u6d88\u4e1a\u9664\u969c",
+                "duration": 246,
+                "genre": "\u68b5\u97f3",
+                "license": "\u4f20\u7edf\u4f5b\u66f2",
+                "icon": "\ud83d\ude4f",
+                "color": "#c43d3d",
+                "description": "\u89c2\u4e16\u97f3\u83e9\u8428\u5927\u60b2\u5492\u68b5\u97f3\u7248\uff0c\u6d88\u4e1a\u9664\u969c\u3001\u589e\u957f\u6148\u60b2\u3002",
+                "url": "/meditation/great_compassion.mp3"
+            },
+            {
+                "id": "heart_sutra",
+                "title": "\u5fc3\u7ecf",
+                "subtitle": "\u822c\u82e5\u667a\u6167\u00b7\u7167\u89c1\u7a7a\u6027",
+                "duration": 235,
+                "genre": "\u68b5\u97f3",
+                "license": "\u4f20\u7edf\u4f5b\u66f2",
+                "icon": "\ud83d\udcff",
+                "color": "#c9a05c",
+                "description": "\u300a\u822c\u82e5\u6ce2\u7f57\u871c\u591a\u5fc3\u7ecf\u300b260 \u5b57\u6d53\u7f29\u822c\u82e5\u667a\u6167\u3002",
+                "url": "/meditation/heart_sutra.mp3"
+            }
+        ],
+        "guided": [
+            {
+                "id": "10min",
+                "title": "\u5341\u5206\u949f\u5165\u95e8",
+                "subtitle": "\u9002\u5408\u521d\u5b66\u8005",
+                "duration": 600,
+                "steps": [
+                    "\u76d8\u817f\u7aef\u5750\uff0c\u80cc\u633a\u76f4",
+                    "\u6df1\u547c\u5438\u4e09\u6b21\uff0c\u5438\u6c14\u6570 4 \u79d2\uff0c\u547c\u6c14\u6570 6 \u79d2",
+                    "\u628a\u6ce8\u610f\u529b\u653e\u5728\u9f3b\u5c16\u547c\u5438\u7684\u8fdb\u51fa",
+                    "\u6742\u5ff5\u5347\u8d77\u65f6\u4e0d\u8bc4\u5224\uff0c\u6e29\u67d4\u56de\u5230\u547c\u5438",
+                    "\u7ed3\u675f\u65f6\u53cc\u624b\u5408\u638c\uff0c\u56de\u5411\u4f17\u751f"
+                ]
+            },
+            {
+                "id": "20min",
+                "title": "\u4e8c\u5341\u5206\u949f\u6b63\u5ff5",
+                "subtitle": "\u8fdb\u9636\u7ec3\u4e60",
+                "duration": 1200,
+                "steps": [
+                    "\u4e09\u4e0b\u5410\u7eb3\u8c03\u606f",
+                    "\u89c2\u547c\u5438\uff1a\u6ce8\u610f\u529b\u9501\u5b9a\u9f3b\u5c16\u51fa\u5165\u6c14",
+                    "\u626b\u63cf\u8eab\u4f53\uff1a\u4ece\u5934\u9876\u5230\u811a\u8dbe\uff0c\u4f9d\u6b21\u653e\u677e\u6bcf\u4e00\u5904",
+                    "\u89c2\u5ff5\u5934\u6765\u53bb\uff1a\u89c1\u5984\u5ff5\u5347\u8d77\u5373\u77e5\u89c1\uff0c\u4e0d\u8ddf\u968f",
+                    "\u56de\u5411\uff1a\u613f\u4e00\u5207\u4f17\u751f\u79bb\u82e6\u5f97\u4e50"
+                ]
+            },
+            {
+                "id": "namo",
+                "title": "\u5357\u65e0\u963f\u5f25\u9640\u4f5b",
+                "subtitle": "\u6301\u540d\u5ff5\u4f5b",
+                "duration": 900,
+                "steps": [
+                    "\u76d8\u5750\uff0c\u6390\u5ff5\u73e0\u6216\u5408\u638c",
+                    "\u5fc3\u4e2d\u9ed8\u5ff5\u6216\u4f4e\u58f0\u51fa\u58f0\u300c\u5357\u65e0\u963f\u5f25\u9640\u4f5b\u300d\u516d\u5b57",
+                    "\u5b57\u5b57\u5206\u660e\u3001\u5fc3\u5fc3\u76f8\u7eed",
+                    "\u6742\u5ff5\u8d77\uff0c\u56de\u5230\u4f5b\u53f7",
+                    "\u4e0b\u5ea7\u524d\u5408\u638c\u56de\u5411"
+                ]
+            }
+        ],
+        "quote": {
+            "text": "\u4e0d\u5fd8\u521d\u5fc3\uff0c\u65b9\u5f97\u59cb\u7ec8",
+            "source": "\u300a\u534e\u4e25\u7ecf\u300b"
+        }
+    }
+}

@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+<title>菩提苑 · 为家人祈福求灵签</title>
+<meta name="description" content="心诚则灵。为家人点一盏祈福灯，求一支关帝灵签，看一卦命理八字。一念慈悲，福报自来。">
+<meta name="theme-color" content="#1a1410">
+<link rel="manifest" href="/static/manifest.json">
+<link rel="icon" href="/favicon.svg">
+<style>
+@font-face{font-family:'ZhiMangXing';font-style:normal;font-weight:400;font-display:block;src:url('/static/fonts/ZhiMangXing-subset.woff2') format('woff2')}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--xuan:#1a1410;--xuan-card:#231c14;--xuan-surface:#2c2318;
+--gold:#c9a05c;--gold-light:#f5e6b8;--gold-dark:#8b6914;
+--vermillion:#c43d3d;--vermillion-light:#e05555;
+--paper:#f5f0e8;--paper-dark:#b8a88a;--paper-warm:#f0e8d8;
+--emerald:#10b981;
+}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--xuan);color:var(--paper);min-height:100vh;overflow-x:hidden}
+.font-display{font-family:'ZhiMangXing',cursive}
+.text-gold{color:var(--gold)}.bg-gold{background:var(--gold)}
+.text-vermillion{color:var(--vermillion)}.text-emerald{color:var(--emerald)}
+
+/* 背景 */
+#bg{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,var(--xuan) 0%,var(--xuan-card) 50%,var(--xuan) 100%)}
+#bg-img{position:fixed;inset:0;z-index:0;background:url('/static/images/temple-mountain.svg') center/cover no-repeat;opacity:.15}
+#bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,rgba(10,6,4,.55) 0%,rgba(10,6,4,.35) 30%,transparent 60%,rgba(10,6,4,.6) 100%)}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none}
+.particle{position:absolute;width:6px;height:6px;border-radius:50%;background:rgba(201,160,92,.35);animation:rise 5s infinite}
+@keyframes rise{0%{transform:translateY(0);opacity:.35}50%{opacity:.6}100%{transform:translateY(-100vh);opacity:0}}
+
+/* 导航 */
+.header{position:fixed;top:0;left:0;right:0;z-index:50;height:56px;transition:all .3s}
+.header.scrolled{background:rgba(26,20,16,.95);backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(201,169,110,.12)}
+.header-inner{max-width:1200px;margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo svg{width:36px;height:36px;color:var(--gold);filter:drop-shadow(0 0 8px rgba(201,160,94,.4))}
+.logo-text{font-size:1.5rem;background:linear-gradient(180deg,#f5e6b8,#c9a05c 50%,#8b6914);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.12em;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+.nav-links{display:flex;gap:20px}
+.nav-links a{color:var(--paper-dark);text-decoration:none;font-size:14px;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.gold-divider{height:1px;background:linear-gradient(90deg,transparent,var(--gold) 50%,transparent);opacity:0;transition:opacity .3s}
+.header.scrolled .gold-divider{opacity:.3}
+
+/* 底部导航 */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;border-top:1px solid rgba(201,160,92,.2);background:rgba(35,28,20,.97);backdrop-filter:blur(12px);display:flex;justify-content:space-around;padding:8px 0 calc(8px + env(safe-area-inset-bottom))}
+.bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:var(--paper-dark);font-size:11px;padding:4px 8px;border-radius:6px;transition:color .2s}
+.bottom-nav a.active{color:var(--gold)}
+.bottom-nav svg{width:20px;height:20px}
+
+/* 内容 */
+.main{position:relative;z-index:10;padding:72px 16px 96px;max-width:800px;margin:0 auto}
+
+/* 卡片 */
+.card{background:rgba(35,28,20,.95);border:1px solid rgba(201,160,92,.2);border-radius:12px;padding:24px;backdrop-filter:blur(4px);transition:border-color .3s}
+.card:hover{border-color:rgba(201,160,92,.3)}
+.card+.card{margin-top:16px}
+
+/* 按钮 */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border:none;border-radius:8px;font-size:16px;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--vermillion);color:#fff;min-width:180px}
+.btn-primary:hover{background:var(--vermillion-light)}
+.btn-secondary{background:transparent;color:var(--gold);border:1px solid rgba(201,160,92,.4)}
+.btn-secondary:hover{border-color:rgba(201,160,92,.6);background:rgba(201,160,92,.1)}
+.btn-gold{background:var(--gold);color:var(--xuan)}
+.btn-gold:hover{background:var(--gold-light)}
+
+/* 表单 */
+input,select,textarea{width:100%;padding:12px;background:rgba(44,35,24,.6);border:1px solid rgba(201,160,92,.2);border-radius:8px;color:var(--paper);font-size:14px;outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:rgba(201,160,92,.5)}
+textarea{resize:vertical;min-height:80px}
+label{display:block;font-size:14px;color:var(--paper-dark);margin-bottom:6px}
+
+/* 标签 */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500}
+.badge-gold{border:1px solid rgba(201,160,92,.4);background:rgba(201,160,92,.1);color:var(--gold)}
+.badge-vermillion{border:1px solid rgba(196,61,61,.4);background:rgba(196,61,61,.1);color:var(--vermillion-light)}
+.badge-emerald{border:1px solid rgba(16,185,129,.4);background:rgba(16,185,129,.1);color:var(--emerald)}
+
+/* 灵签等级颜色 */
+.level-shangshang,.level-shangji{color:var(--vermillion-light)}
+.level-zhongji{color:var(--gold)}
+.level-zhongping{color:var(--paper)}
+.level-xiaxia{color:var(--paper-dark)}
+
+/* 音乐播放器 */
+.player-bar{position:fixed;bottom:60px;left:12px;right:12px;z-index:35;background:rgba(35,28,20,.95);border:1px solid rgba(201,160,92,.4);border-radius:16px;padding:8px 12px;backdrop-filter:blur(12px);display:none}
+.player-bar.show{display:flex;align-items:center;gap:12px}
+.player-icon{width:48px;height:48px;border-radius:50%;border:1px solid rgba(201,160,92,.4);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.player-info{flex:1;min-width:0}
+.player-title{font-size:14px;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player-subtitle{font-size:11px;color:var(--paper-dark);opacity:.7}
+.player-progress{height:3px;background:rgba(44,35,24,.6);border-radius:2px;margin-top:4px;overflow:hidden}
+.player-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--vermillion));transition:width .3s}
+.player-btn{width:32px;height:32px;border-radius:50%;border:1px solid rgba(201,160,92,.4);background:rgba(201,160,92,.1);color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+
+/* 黄历特殊样式 */
+.almanac-header{text-align:center;padding:16px 0}
+.almanac-date{font-size:2rem;background:linear-gradient(180deg,#f5e6b8,#c9a05c 50%,#8b6914);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.level-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 24px;border-radius:24px;font-size:1rem;margin:16px 0}
+.yi-ji-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.yi-card{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:16px}
+.ji-card{background:rgba(196,61,61,.05);border:1px solid rgba(196,61,61,.3);border-radius:12px;padding:16px}
+.tag{display:inline-block;padding:4px 12px;border-radius:16px;font-size:13px;margin:4px}
+.tag-yi{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:#6ee7b7}
+.tag-ji{background:rgba(196,61,61,.1);border:1px solid rgba(196,61,61,.3);color:var(--vermillion-light)}
+.shichen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-top:12px}
+.shichen-item{background:rgba(44,35,24,.4);border:1px solid rgba(201,160,92,.15);border-radius:8px;padding:12px;text-align:center}
+.shichen-name{font-size:16px;color:var(--gold)}
+.shichen-luck{font-size:12px;margin-top:4px}
+.shichen-luck.ji{color:var(--emerald)}.shichen-luck.xiong{color:var(--vermillion)}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px}
+.week-item{text-align:center;padding:8px 4px;border-radius:8px;border:2px solid rgba(201,160,92,.2);cursor:pointer;transition:all .2s}
+.week-item.active{border-color:var(--gold);background:rgba(201,160,92,.15)}
+.week-item:hover{border-color:rgba(201,160,92,.5)}
+
+/* 师父选择 */
+.master-grid{display:grid;gap:12px;margin:16px 0}
+.master-card{display:flex;gap:12px;padding:16px;border-radius:12px;border:2px solid rgba(201,160,92,.2);cursor:pointer;transition:all .2s}
+.master-card.selected{border-color:var(--gold);background:rgba(201,160,92,.1)}
+.master-emoji{font-size:2rem;width:56px;text-align:center}
+.master-name{font-size:16px;font-weight:600}
+.master-role{font-size:12px;color:var(--paper-dark)}
+.master-desc{font-size:13px;color:var(--paper-dark);margin-top:4px}
+
+/* 音乐列表 */
+.track-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.track-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;border:1px solid rgba(201,160,92,.15);cursor:pointer;transition:all .2s}
+.track-item:hover,.track-item.playing{border-color:rgba(201,160,92,.4);background:rgba(201,160,92,.05)}
+.track-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.track-info{flex:1;min-width:0}
+.track-title{font-size:15px;color:var(--paper)}
+.track-subtitle{font-size:12px;color:var(--paper-dark);opacity:.7}
+.track-duration{font-size:12px;color:var(--paper-dark)}
+
+/* 赚按钮 */
+.earn-btn{position:fixed;right:12px;bottom:100px;z-index:40;width:56px;height:56px;border-radius:50%;border:1px solid rgba(201,160,92,.5);background:linear-gradient(135deg,rgba(201,160,92,.35),rgba(201,160,92,.2),rgba(196,61,61,.2));display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(201,160,92,.2);backdrop-filter:blur(8px)}
+.earn-btn span{font-size:22px;color:var(--gold);text-shadow:0 0 10px rgba(201,162,39,.35)}
+
+/* 加载 */
+.loading{text-align:center;padding:60px;color:var(--paper-dark);opacity:.65}
+
+/* 响应式 */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .bottom-nav{display:flex}
+}
+@media(min-width:769px){
+  .bottom-nav{display:none}
+  .earn-btn{bottom:16px}
+  .player-bar{bottom:16px;left:auto;right:16px;max-width:384px}
+}
+@media(min-width:769px){
+  .yi-ji-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .yi-ji-grid{grid-template-columns:1fr}
+  .week-grid{grid-template-columns:repeat(7,1fr)}
+}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="bg-img"></div>
+<div id="bg-glow"></div>
+<div class="particles" id="particles"></div>
+
+<header class="header" id="header">
+  <div class="header-inner">
+    <a class="logo" href="#/" onclick="navigate('/')">
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M32 6 C 22 6, 12 12, 10 22 C 8 32, 14 44, 24 50 C 28 53, 30 56, 31 60 L 32 62 L 33 60 C 34 56, 36 53, 40 50 C 50 44, 56 32, 54 22 C 52 12, 42 6, 32 6 Z" fill="currentColor" fill-opacity=".12"/>
+        <path d="M32 8 V 60" stroke-width="1.4"/>
+        <path d="M32 16 C 26 18, 20 22, 16 28"/>
+        <path d="M32 16 C 38 18, 44 22, 48 28"/>
+        <path d="M32 28 C 24 30, 18 36, 16 42"/>
+        <path d="M32 28 C 40 30, 46 36, 48 42"/>
+        <path d="M32 42 C 28 46, 26 50, 26 54"/>
+        <path d="M32 42 C 36 46, 38 50, 38 54"/>
+      </svg>
+      <span class="logo-text">菩提苑</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#/qifu" onclick="navigate('/qifu')">为家人祈福</a>
+      <a href="#/almanac" onclick="navigate('/almanac')">今日黄历</a>
+      <a href="#/lottery" onclick="navigate('/lottery')">求灵签</a>
+      <a href="#/bazi" onclick="navigate('/bazi')">八字精批</a>
+      <a href="#/dream" onclick="navigate('/dream')">周公解梦</a>
+      <a href="#/palmistry" onclick="navigate('/palmistry')">看手相</a>
+      <a href="#/naming" onclick="navigate('/naming')">宝宝起名</a>
+      <a href="#/divination" onclick="navigate('/divination')">六爻占卜</a>
+      <a href="#/meditation" onclick="navigate('/meditation')">静心禅坐</a>
+    </nav>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="player-btn" onclick="toggleMusic()" title="禅修音乐" id="musicBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="gold-divider"></div>
+</header>
+
+<main class="main" id="app">
+  <div class="loading" id="loading">加载中...</div>
+</main>
+
+<div class="player-bar" id="playerBar">
+  <div class="player-icon" id="playerIcon">🧘</div>
+  <div class="player-info">
+    <div class="player-title" id="playerTitle">--</div>
+    <div class="player-subtitle" id="playerSubtitle">--</div>
+    <div class="player-progress"><div class="player-progress-fill" id="playerProgress"></div></div>
+  </div>
+  <button class="player-btn" onclick="togglePlay()" id="playPauseBtn">▶</button>
+  <button class="player-btn" onclick="stopMusic()">✕</button>
+</div>
+
+<audio id="audioEl" preload="auto"></audio>
+
+<nav class="bottom-nav" id="bottomNav">
+  <a href="#/" onclick="navigate('/')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>首页</span></a>
+  <a href="#/qifu" onclick="navigate('/qifu')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg><span>祈福</span></a>
+  <a href="#/almanac" onclick="navigate('/almanac')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><span>黄历</span></a>
+  <a href="#/lottery" onclick="navigate('/lottery')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/></svg><span>灵签</span></a>
+  <a href="#/meditation" onclick="navigate('/meditation')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m8 12 4-4 4 4"/><path d="M12 16V8"/></svg><span>禅坐</span></a>
+</nav>
+
+<div class="earn-btn" onclick="showShareModal()"><span>赚</span></div>
+
+<script>
+const API = '/api/v1';
+let currentRoute = '/';
+let authToken = localStorage.getItem('token');
+let tracks = [];
+let currentTrack = null;
+let isPlaying = false;
+const audio = document.getElementById('audioEl');
+
+// ============ Init ============
+(async function init() {
+  initParticles();
+  initScrollHeader();
+  if (!authToken) {
+    const did = localStorage.getItem('device_id') || 'web_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,10);
+    localStorage.setItem('device_id', did);
+    const res = await api('/auth/anonymous/init', { device_id: did });
+    if (res && res.token) {
+      authToken = res.token;
+      localStorage.setItem('token', res.token);
+      localStorage.setItem('user', JSON.stringify(res.user));
+    }
+  }
+  const catalog = await api('/meditation/catalog');
+  if (catalog && catalog.tracks) tracks = catalog.tracks;
+  navigate(window.location.hash.slice(1) || '/');
+})();
+
+function initParticles() {
+  const el = document.getElementById('particles');
+  const positions = [{l:12,t:20},{l:32,t:65},{l:55,t:38},{l:72,t:72},{l:85,t:28},{l:20,t:82}];
+  positions.forEach((p, i) => {
+    const s = document.createElement('span');
+    s.className = 'particle';
+    s.style.cssText = `left:${p.l}%;top:${p.t}%;animation-delay:${i*.8}s;animation-duration:${4+i}s`;
+    el.appendChild(s);
+  });
+}
+
+function initScrollHeader() {
+  window.addEventListener('scroll', () => {
+    document.getElementById('header').classList.toggle('scrolled', window.scrollY > 20);
+  });
+}
+
+// ============ API ============
+async function api(path, body) {
+  const headers = {'Content-Type':'application/json'};
+  if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
+  try {
+    const r = await fetch(API + path, {method:'POST', headers, body: body ? JSON.stringify(body) : '{}'});
+    const j = await r.json();
+    if (j.code === 0) return j.data;
+    if (j.code === 40101) { localStorage.removeItem('token'); authToken = null; }
+    return null;
+  } catch(e) { console.error(e); return null; }
+}
+
+// ============ Router ============
+function navigate(path) {
+  currentRoute = path;
+  window.location.hash = path;
+  render();
+  updateActiveNav();
+  window.scrollTo(0, 0);
+}
+
+function updateActiveNav() {
+  document.querySelectorAll('.nav-links a, .bottom-nav a').forEach(a => {
+    const href = a.getAttribute('href') || '';
+    a.classList.toggle('active', href === '#' + currentRoute || (currentRoute === '/' && href === '#/'));
+  });
+}
+
+// ============ Pages ============
+function render() {
+  const app = document.getElementById('app');
+  const pages = {
+    '/': renderHome,
+    '/almanac': renderAlmanac,
+    '/qifu': renderQifu,
+    '/lottery': renderLottery,
+    '/bazi': renderBazi,
+    '/dream': renderDream,
+    '/meditation': renderMeditation,
+    '/palmistry': renderPalmistry,
+    '/naming': renderNaming,
+    '/divination': renderDivination,
+  };
+  const fn = pages[currentRoute] || renderHome;
+  fn(app);
+}
+
+function renderHome(el) {
+  el.innerHTML = `
+    <div class="almanac-header">
+      <div style="font-size:3rem;margin-bottom:8px">🪷</div>
+      <h1 class="font-display" style="font-size:2.5rem;background:linear-gradient(180deg,#f5e6b8,#c9a05c 50%,#8b6914);-webkit-background-clip:text;-webkit-text-fill-color:transparent">菩提苑</h1>
+      <p style="color:var(--paper-dark);margin-top:8px;font-size:15px">心诚则灵 · 一念慈悲 · 福报自来</p>
+    </div>
+    <div class="card" style="margin-top:24px">
+      <h2 class="font-display" style="font-size:1.5rem;color:var(--gold);margin-bottom:16px">🙏 为家人祈福</h2>
+      <p style="color:var(--paper-dark);font-size:14px;margin-bottom:16px">点一盏灯，挂家人之名，愿心愿成就，福寿安康。</p>
+      <button class="btn btn-primary" onclick="navigate('/qifu')">点亮一盏灯</button>
+    </div>
+    <div class="card">
+      <h2 class="font-display" style="font-size:1.5rem;color:var(--gold);margin-bottom:16px">📅 今日黄历</h2>
+      <div id="homeAlmanac"><div class="loading">加载中...</div></div>
+      <button class="btn btn-secondary" style="margin-top:12px" onclick="navigate('/almanac')">查看完整黄历</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="card" style="cursor:pointer" onclick="navigate('/lottery')">
+        <div style="font-size:2rem;margin-bottom:8px">📜</div>
+        <div class="font-display" style="font-size:1.2rem;color:var(--gold)">求灵签</div>
+        <p style="font-size:12px;color:var(--paper-dark);margin-top:4px">心诚则灵</p>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="navigate('/bazi')">
+        <div style="font-size:2rem;margin-bottom:8px">☯️</div>
+        <div class="font-display" style="font-size:1.2rem;color:var(--gold)">八字精批</div>
+        <p style="font-size:12px;color:var(--paper-dark);margin-top:4px">洞悉天命</p>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="navigate('/dream')">
+        <div style="font-size:2rem;margin-bottom:8px">🌙</div>
+        <div class="font-display" style="font-size:1.2rem;color:var(--gold)">周公解梦</div>
+        <p style="font-size:12px;color:var(--paper-dark);margin-top:4px">百梦皆有意</p>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="navigate('/meditation')">
+        <div style="font-size:2rem;margin-bottom:8px">🧘</div>
+        <div class="font-display" style="font-size:1.2rem;color:var(--gold)">静心禅坐</div>
+        <p style="font-size:12px;color:var(--paper-dark);margin-top:4px">身心安住</p>
+      </div>
+    </div>
+  `;
+  loadHomeAlmanac();
+}
+
+async function loadHomeAlmanac() {
+  const today = new Date().toISOString().slice(0,10);
+  const data = await api('/almanac/today', {date: today});
+  if (!data) return;
+  const el = document.getElementById('homeAlmanac');
+  if (!el) return;
+  el.innerHTML = `
+    <div style="text-align:center">
+      <div style="font-size:1.2rem;color:var(--gold)">${data.solar.year}年${data.solar.month}月${data.solar.day}日</div>
+      <div style="font-size:13px;color:var(--paper-dark);margin-top:4px">${data.solar.weekday_full} · 农历${data.lunar.year_in_chinese}年${data.lunar.month_in_chinese}${data.lunar.day_in_chinese}</div>
+      <div class="level-badge badge-gold" style="margin-top:8px">今日 · ${data.overall_level.level}  ${data.overall_level.summary}</div>
+    </div>
+  `;
+}
+
+// ============ Almanac Page ============
+let almanacDate = new Date().toISOString().slice(0,10);
+
+function renderAlmanac(el) {
+  el.innerHTML = `<div class="loading">加载今日黄历...</div>`;
+  loadAlmanac();
+}
+
+async function loadAlmanac() {
+  const data = await api('/almanac/today', {date: almanacDate});
+  const week = await api('/almanac/week', {});
+  const el = document.getElementById('app');
+  if (!data) { el.innerHTML = '<div class="loading">加载失败</div>'; return; }
+  const isToday = almanacDate === new Date().toISOString().slice(0,10);
+  el.innerHTML = `
+    <div class="card">
+      <div class="almanac-header">
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px">
+          <button class="btn btn-secondary" style="padding:8px 12px;min-width:auto" onclick="shiftDate(-1)">◀</button>
+          <div>
+            <p style="font-size:13px;color:var(--gold);letter-spacing:4px">${isToday?'今日黄历':'黄历'}</p>
+            <h1 class="font-display almanac-date">${data.solar.year}年${data.solar.month}月${data.solar.day}日</h1>
+            <p style="font-size:14px;color:var(--paper-dark)">${data.solar.weekday_full} · 农历${data.lunar.year_in_chinese}年${data.lunar.month_in_chinese}${data.lunar.day_in_chinese}</p>
+            <p style="font-size:13px;color:var(--paper-dark);opacity:.7;margin-top:4px">干支：${data.ganzhi.year}年 ${data.ganzhi.month}月 ${data.ganzhi.day}日 ${data.ganzhi.nayin?'('+data.ganzhi.nayin+')':''} ${data.lunar.year_zodiac?' · '+data.lunar.year_zodiac+'年':''}</p>
+          </div>
+          <button class="btn btn-secondary" style="padding:8px 12px;min-width:auto" onclick="shiftDate(1)">▶</button>
+        </div>
+        <div class="level-badge badge-gold" style="border-color:${getLevelBorder(data.overall_level.level)};background:${getLevelBg(data.overall_level.level)}">
+          <span style="color:${getLevelColor(data.overall_level.level)}">☀</span>
+          <span class="font-display" style="font-size:1.2rem;color:${getLevelColor(data.overall_level.level)}">今日 · ${data.overall_level.level}</span>
+          <span style="font-size:13px">${data.overall_level.summary}</span>
+        </div>
+        ${data.jieqi.today?`<div class="badge badge-gold" style="margin-top:8px">今日节气：${data.jieqi.today}</div>`:''}
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="yi-ji-grid">
+        <div class="yi-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+            <span class="badge badge-emerald" style="font-size:14px">宜</span>
+            <span style="font-size:14px;color:var(--paper-dark)">今日适合</span>
+          </div>
+          <div>${(data.yi||[]).map(y=>`<span class="tag tag-yi">${y}</span>`).join('')||'<span style="color:var(--paper-dark);font-size:13px">无明确建议</span>'}</div>
+        </div>
+        <div class="ji-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+            <span class="badge badge-vermillion" style="font-size:14px">忌</span>
+            <span style="font-size:14px;color:var(--paper-dark)">今日避开</span>
+          </div>
+          <div>${(data.ji||[]).map(j=>`<span class="tag tag-ji">${j}</span>`).join('')||'<span style="color:var(--paper-dark);font-size:13px">无明确禁忌</span>'}</div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <h2 class="font-display" style="font-size:1.2rem;color:var(--gold);margin-bottom:12px">神煞 · 冲煞</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        ${data.shen.lucky.length?`<div style="background:rgba(44,35,24,.4);border:1px solid rgba(201,160,92,.15);border-radius:8px;padding:12px"><div style="font-size:13px;color:var(--gold)">吉神宜趋</div><div style="font-size:14px;margin-top:4px">${data.shen.lucky.join('、')}</div></div>`:''}
+        ${data.shen.unlucky.length?`<div style="background:rgba(44,35,24,.4);border:1px solid rgba(201,160,92,.15);border-radius:8px;padding:12px"><div style="font-size:13px;color:var(--vermillion)">凶神宜避</div><div style="font-size:14px;margin-top:4px">${data.shen.unlucky.join('、')}</div></div>`:''}
+        ${data.chong?`<div style="background:rgba(44,35,24,.4);border:1px solid rgba(201,160,92,.15);border-radius:8px;padding:12px"><div style="font-size:13px;color:var(--gold)">冲煞</div><div style="font-size:14px;margin-top:4px">${data.chong}</div></div>`:''}
+        ${data.tai_position?`<div style="background:rgba(44,35,24,.4);border:1px solid rgba(201,160,92,.15);border-radius:8px;padding:12px"><div style="font-size:13px;color:var(--gold)">胎神方位</div><div style="font-size:14px;margin-top:4px">${data.tai_position}</div></div>`:''}
+        ${data.xiu?`<div style="background:rgba(44,35,24,.4);border:1px solid rgba(201,160,92,.15);border-radius:8px;padding:12px"><div style="font-size:13px;color:var(--gold)">28宿</div><div style="font-size:14px;margin-top:4px">${data.xiu} ${data.xiu_luck?'· '+data.xiu_luck:''}</div></div>`:''}
+        ${data.zhixing?`<div style="background:rgba(44,35,24,.4);border:1px solid rgba(201,160,92,.15);border-radius:8px;padding:12px"><div style="font-size:13px;color:var(--gold)">12建除</div><div style="font-size:14px;margin-top:4px">${data.zhixing}</div></div>`:''}
+      </div>
+    </div>
+    ${data.shichen&&data.shichen.length?`<div class="card" style="margin-top:12px">
+      <h2 class="font-display" style="font-size:1.2rem;color:var(--gold);margin-bottom:12px">时辰吉凶</h2>
+      <div class="shichen-grid">${data.shichen.map(s=>`<div class="shichen-item"><div class="shichen-name">${s.name}时</div><div class="shichen-luck ${s.lucky==='吉'?'ji':'xiong'}">${s.lucky}</div><div style="font-size:11px;color:var(--paper-dark);opacity:.65;margin-top:2px">${s.ganzhi}</div>${s.chong?`<div style="font-size:11px;color:var(--paper-dark);opacity:.55;margin-top:2px">冲：${s.chong}</div>`:''}</div>`).join('')}</div>
+    </div>`:''}
+    ${week&&week.items?`<div class="card" style="margin-top:12px">
+      <h2 class="font-display" style="font-size:1.2rem;color:var(--gold);margin-bottom:12px">未来七日</h2>
+      <div class="week-grid">${week.items.map(d=>`<div class="week-item ${d.date===almanacDate?'active':''}" onclick="almanacDate='${d.date}';loadAlmanac()"><div style="font-size:11px;color:var(--paper-dark)">周${d.weekday}</div><div class="font-display" style="font-size:14px;color:var(--gold)">${d.lunar_day}</div><div style="font-size:11px;color:${getLevelColor(d.level)}">${d.level}</div></div>`).join('')}</div>
+    </div>`:''}
+  `;
+}
+
+function shiftDate(d) {
+  const t = new Date(almanacDate);
+  t.setDate(t.getDate()+d);
+  almanacDate = t.toISOString().slice(0,10);
+  loadAlmanac();
+}
+
+function getLevelColor(level) {
+  const m = {'上上':'#e05555','上吉':'#e05555','中吉':'#c9a05c','中平':'#f5f0e8','下下':'rgba(184,168,138,.7)'};
+  return m[level]||'#c9a05c';
+}
+function getLevelBorder(level) {
+  const m = {'上上':'rgba(196,61,61,.4)','上吉':'rgba(196,61,61,.3)','中吉':'rgba(201,160,92,.4)','中平':'rgba(201,160,92,.2)','下下':'rgba(184,168,138,.2)'};
+  return m[level]||'rgba(201,160,92,.3)';
+}
+function getLevelBg(level) {
+  const m = {'上上':'rgba(196,61,61,.1)','上吉':'rgba(196,61,61,.05)','中吉':'rgba(201,160,92,.1)','中平':'rgba(44,35,24,.5)','下下':'rgba(184,168,138,.05)'};
+  return m[level]||'rgba(201,160,92,.05)';
+}
+
+// ============ Qifu Page ============
+function renderQifu(el) {
+  el.innerHTML = `
+    <h1 class="font-display" style="font-size:2rem;color:var(--gold);text-align:center;margin-bottom:8px">为家人祈福</h1>
+    <p style="text-align:center;color:var(--paper-dark);font-size:14px;margin-bottom:24px">点一盏灯，挂家人之名，愿心愿成就，福寿安康。</p>
+    <div id="qifuStats" style="display:flex;justify-content:center;gap:24px;margin-bottom:24px;font-size:14px;color:var(--paper-dark)"></div>
+    <div class="card">
+      <h2 class="font-display" style="font-size:1.2rem;color:var(--gold);margin-bottom:12px">为谁祈福</h2>
+      <label>家人姓名与您的关系</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+        <button class="btn btn-secondary rel-btn" data-rel="father" onclick="selectRel(this)">父亲</button>
+        <button class="btn btn-secondary rel-btn" data-rel="mother" onclick="selectRel(this)">母亲</button>
+        <button class="btn btn-secondary rel-btn" data-rel="spouse" onclick="selectRel(this)">爱人</button>
+        <button class="btn btn-secondary rel-btn" data-rel="child" onclick="selectRel(this)">孩子</button>
+        <button class="btn btn-secondary rel-btn" data-rel="grandchild" onclick="selectRel(this)">孙辈</button>
+        <button class="btn btn-secondary rel-btn" data-rel="friend" onclick="selectRel(this)">朋友</button>
+        <button class="btn btn-secondary rel-btn" data-rel="self" onclick="selectRel(this)">自己</button>
+      </div>
+      <label>选一盏灯</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+        <button class="btn btn-secondary lamp-btn" data-lamp="peace" onclick="selectLamp(this)">🕯️ 平安灯 ¥3.72</button>
+        <button class="btn btn-secondary lamp-btn" data-lamp="wisdom" onclick="selectLamp(this)">🕯️ 智慧灯 ¥9.80</button>
+        <button class="btn btn-secondary lamp-btn" data-lamp="love" onclick="selectLamp(this)">🕯️ 姻缘灯 ¥5.71</button>
+        <button class="btn btn-secondary lamp-btn" data-lamp="wealth" onclick="selectLamp(this)">🕯️ 财福灯 ¥3.82</button>
+      </div>
+      <label>为谁点灯（姓名）</label>
+      <input type="text" id="qifuPerson" placeholder="请输入姓名" style="margin-bottom:16px">
+      <label>心愿（可选，最多80字）</label>
+      <textarea id="qifuWish" placeholder="您的心愿..." maxlength="80" style="margin-bottom:16px"></textarea>
+      <label>您的称呼（可选，显示在灯墙）</label>
+      <input type="text" id="qifuName" placeholder="如：女儿" style="margin-bottom:16px">
+      <div style="text-align:center">
+        <button class="btn btn-primary" onclick="createBlessing()">🕯️ 点亮此灯</button>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <h2 class="font-display" style="font-size:1.2rem;color:var(--gold);margin-bottom:12px">功德灯墙</h2>
+      <p style="font-size:12px;color:var(--paper-dark);margin-bottom:12px">姓名已脱敏处理 · 心诚则灵</p>
+      <div id="lampWall"><div class="loading">加载中...</div></div>
+    </div>
+  `;
+  loadLampStats();
+  loadLampWall();
+}
+
+let selectedRel = '', selectedLamp = 'peace';
+function selectRel(btn) {
+  document.querySelectorAll('.rel-btn').forEach(b=>b.classList.remove('btn-gold'));
+  btn.classList.add('btn-gold');
+  selectedRel = btn.dataset.rel;
+}
+function selectLamp(btn) {
+  document.querySelectorAll('.lamp-btn').forEach(b=>b.classList.remove('btn-gold'));
+  btn.classList.add('btn-gold');
+  selectedLamp = btn.dataset.lamp;
+}
+
+async function loadLampStats() {
+  const d = await api('/blessing/stats');
+  if (d) document.getElementById('qifuStats').innerHTML = `<span>已点亮 <b style="color:var(--gold)">${d.total}</b> 盏</span><span>今日新增 <b style="color:var(--gold)">${d.today_new}</b> 盏</span>`;
+}
+
+async function loadLampWall() {
+  const d = await api('/blessing/wall');
+  const el = document.getElementById('lampWall');
+  if (!d || !d.lamps || d.lamps.length === 0) { el.innerHTML = '<p style="color:var(--paper-dark);font-size:13px;text-align:center">暂无祈福灯</p>'; return; }
+  el.innerHTML = d.lamps.map(l => `<div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:8px;border:1px solid rgba(201,160,92,.15);margin-bottom:8px"><div style="font-size:1.5rem">🕯️</div><div><div style="font-size:14px;color:var(--paper)">${l.display_name} · ${l.relation}</div><div style="font-size:12px;color:var(--paper-dark)">${l.lamp_type} · ${l.lit_at}</div>${l.wish?`<div style="font-size:12px;color:var(--paper-dark);margin-top:2px">${l.wish}</div>`:''}</div></div>`).join('');
+}
+
+async function createBlessing() {
+  const person = document.getElementById('qifuPerson').value;
+  const wish = document.getElementById('qifuWish').value;
+  const name = document.getElementById('qifuName').value;
+  if (!person) { alert('请输入为谁祈福'); return; }
+  const d = await api('/blessing/create', { lamp_type: selectedLamp, for_person: person, relation: selectedRel, wish, display_name: name, duration_hours: 24 });
+  if (d) { alert('祈福灯已点亮！'); loadLampStats(); loadLampWall(); }
+}
+
+// ============ Lottery Page ============
+function renderLottery(el) {
+  el.innerHTML = `
+    <h1 class="font-display" style="font-size:2rem;color:var(--gold);text-align:center;margin-bottom:8px">关帝灵签</h1>
+    <p style="text-align:center;color:var(--paper-dark);font-size:14px;margin-bottom:24px">心诚则灵 · 默念所求 · 抽一支签</p>
+    <div class="card">
+      <h2 class="font-display" style="font-size:1.2rem;color:var(--gold);margin-bottom:12px">请选一位师父为您开示</h2>
+      <div class="master-grid">
+        <div class="master-card" data-master="huiming" onclick="selectMaster(this)"><div class="master-emoji">🧘</div><div><div class="master-name">慧明长老</div><div class="master-role">古寺住持 · 庄重持重，引经据典</div><div class="master-desc">通读《渊海子平》《滴天髓》，言语稳重克制。适合希望深度解读、看古籍出处的施主。</div></div></div>
+        <div class="master-card" data-master="mingxin" onclick="selectMaster(this)"><div class="master-emoji">🙏</div><div><div class="master-name">明心师父</div><div class="master-role">尼众法师 · 慈悲温柔，劝人向善</div><div class="master-desc">语调温和，慈悲为怀。适合家庭、感情、亲人祈福场景。</div></div></div>
+        <div class="master-card" data-master="xuanzhen" onclick="selectMaster(this)"><div class="master-emoji">☯️</div><div><div class="master-name">玄真道长</div><div class="master-role">山中道人 · 直爽通透，说大白话</div><div class="master-desc">山中道人，不爱绕弯子。把命理讲成大白话，适合急性子。</div></div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <label>写下您要问的事，心诚则灵</label>
+      <textarea id="lotteryQ" placeholder="请描述您想问的事情..." style="margin-bottom:16px"></textarea>
+      <div style="text-align:center"><button class="btn btn-primary" onclick="drawLottery()">默念所求 · 求一支签</button></div>
+    </div>
+    <div id="lotteryResult" style="margin-top:12px"></div>
+  `;
+}
+
+let selectedMaster = 'huiming';
+function selectMaster(el) {
+  document.querySelectorAll('.master-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMaster = el.dataset.master;
+}
+
+async function drawLottery() {
+  const q = document.getElementById('lotteryQ').value;
+  const r = await api('/lottery/draw', { master: selectedMaster, question: q });
+  if (!r) return;
+  const el = document.getElementById('lotteryResult');
+  el.innerHTML = `
+    <div class="card" style="border-color:rgba(201,160,92,.4)">
+      <div style="text-align:center;margin-bottom:16px">
+        <div class="font-display" style="font-size:1.5rem;color:var(--gold)">${r.code}</div>
+        <div class="font-display" style="font-size:1.2rem;color:var(--paper);margin-top:4px">${r.title}</div>
+        <div class="badge badge-gold" style="margin-top:8px">签级：${r.level}</div>
+      </div>
+      <div style="background:rgba(44,35,24,.4);border:1px solid rgba(201,160,92,.15);border-radius:12px;padding:16px;margin-bottom:12px">
+        <div style="white-space:pre-line;font-size:14px;line-height:1.8;color:var(--paper)">${r.poem}</div>
+      </div>
+      <div style="background:rgba(201,160,92,.05);border:1px solid rgba(201,160,92,.2);border-radius:12px;padding:16px">
+        <div style="white-space:pre-line;font-size:14px;line-height:1.8;color:var(--paper-dark)">${r.master_reading}</div>
+      </div>
+    </div>
+  `;
+}
+
+// ============ Bazi Page ============
+function renderBazi(el) {
+  el.innerHTML = `
+    <h1 class="font-display" style="font-size:2rem;color:var(--gold);text-align:center;margin-bottom:8px">八字精批</h1>
+    <p style="text-align:center;color:var(--paper-dark);font-size:14px;margin-bottom:24px">输入生辰，洞悉天命，先看命盘，再看流年。</p>
+    ${renderMasterSelector()}
+    <div class="card" style="margin-top:12px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+        <div><label>出生年</label><input type="number" id="baziYear" value="1990" min="1900" max="2030"></div>
+        <div><label>出生月</label><input type="number" id="baziMonth" value="5" min="1" max="12"></div>
+        <div><label>出生日</label><input type="number" id="baziDay" value="15" min="1" max="31"></div>
+      </div>
+      <label>出生时辰</label>
+      <select id="baziShichen" style="margin-bottom:16px">
+        <option value="zi">子时 (23:00-01:00)</option><option value="chou">丑时 (01:00-03:00)</option>
+        <option value="yin">寅时 (03:00-05:00)</option><option value="mao">卯时 (05:00-07:00)</option>
+        <option value="chen">辰时 (07:00-09:00)</option><option value="si">巳时 (09:00-11:00)</option>
+        <option value="wu">午时 (11:00-13:00)</option><option value="wei" selected>未时 (13:00-15:00)</option>
+        <option value="shen">申时 (15:00-17:00)</option><option value="you">酉时 (17:00-19:00)</option>
+        <option value="xu">戌时 (19:00-21:00)</option><option value="hai">亥时 (21:00-23:00)</option>
+      </select>
+      <label>性别</label>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button class="btn btn-gold" id="genderMale" onclick="setGender('male')">男</button>
+        <button class="btn btn-secondary" id="genderFemale" onclick="setGender('female')">女</button>
+      </div>
+      <div style="text-align:center"><button class="btn btn-primary" onclick="analyzeBazi()">请师父排盘</button></div>
+    </div>
+    <div id="baziResult" style="margin-top:12px"></div>
+  `;
+}
+
+let baziGender = 'male';
+function setGender(g) {
+  baziGender = g;
+  document.getElementById('genderMale').className = g==='male'?'btn btn-gold':'btn btn-secondary';
+  document.getElementById('genderFemale').className = g==='female'?'btn btn-gold':'btn btn-secondary';
+}
+
+function renderMasterSelector() {
+  return `<div class="card"><h2 class="font-display" style="font-size:1.2rem;color:var(--gold);margin-bottom:12px">请选一位师父为您开示</h2>
+    <div class="master-grid">
+      <div class="master-card selected" data-master="huiming" onclick="selectMaster(this)"><div class="master-emoji">🧘</div><div><div class="master-name">慧明长老</div><div class="master-role">古寺住持 · 庄重持重</div></div></div>
+      <div class="master-card" data-master="mingxin" onclick="selectMaster(this)"><div class="master-emoji">🙏</div><div><div class="master-name">明心师父</div><div class="master-role">尼众法师 · 慈悲温柔</div></div></div>
+      <div class="master-card" data-master="xuanzhen" onclick="selectMaster(this)"><div class="master-emoji">☯️</div><div><div class="master-name">玄真道长</div><div class="master-role">山中道人 · 直爽通透</div></div></div>
+    </div></div>`;
+}
+
+async function analyzeBazi() {
+  const r = await api('/bazi/analyze', {
+    year: +document.getElementById('baziYear').value,
+    month: +document.getElementById('baziMonth').value,
+    day: +document.getElementById('baziDay').value,
+    shichen: document.getElementById('baziShichen').value,
+    gender: baziGender,
+    master: selectedMaster,
+  });
+  if (!r) return;
+  const bazi = r.bazi || {};
+  const el = document.getElementById('baziResult');
+  el.innerHTML = `
+    <div class="card" style="border-color:rgba(201,160,92,.4)">
+      <h2 class="font-display" style="font-size:1.2rem;color:var(--gold);margin-bottom:12px">八字命盘</h2>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;margin-bottom:16px">
+        <div style="background:rgba(44,35,24,.4);border-radius:8px;padding:12px"><div style="font-size:11px;color:var(--paper-dark)">年柱</div><div class="font-display" style="font-size:1.2rem;color:var(--gold)">${bazi.year||'--'}</div></div>
+        <div style="background:rgba(44,35,24,.4);border-radius:8px;padding:12px"><div style="font-size:11px;color:var(--paper-dark)">月柱</div><div class="font-display" style="font-size:1.2rem;color:var(--gold)">${bazi.month||'--'}</div></div>
+        <div style="background:rgba(44,35,24,.4);border-radius:8px;padding:12px"><div style="font-size:11px;color:var(--paper-dark)">日柱</div><div class="font-display" style="font-size:1.2rem;color:var(--gold)">${bazi.day||'--'}</div></div>
+        <div style="background:rgba(44,35,24,.4);border-radius:8px;padding:12px"><div style="font-size:11px;color:var(--paper-dark)">时柱</div><div class="font-display" style="font-size:1.2rem;color:var(--gold)">${bazi.shichen||'--'}</div></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="badge badge-gold">生肖：${r.sheng_xiao||'--'}</div>
+        <div class="badge badge-gold">本命：${r.ben_ming||'--'}</div>
+        ${(r.wuxing||[]).map(w=>`<div class="badge badge-gold">${w}</div>`).join('')}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="background:rgba(44,35,24,.4);border-radius:8px;padding:12px"><div style="font-size:13px;color:var(--gold);margin-bottom:4px">性格</div><div style="font-size:14px">${r.personality||''}</div></div>
+        <div style="background:rgba(44,35,24,.4);border-radius:8px;padding:12px"><div style="font-size:13px;color:var(--gold);margin-bottom:4px">事业</div><div style="font-size:14px">${r.career||''}</div></div>
+        <div style="background:rgba(44,35,24,.4);border-radius:8px;padding:12px"><div style="font-size:13px;color:var(--gold);margin-bottom:4px">财运</div><div style="font-size:14px">${r.wealth||''}</div></div>
+        <div style="background:rgba(44,35,24,.4);border-radius:8px;padding:12px"><div style="font-size:13px;color:var(--gold);margin-bottom:4px">感情</div><div style="font-size:14px">${r.relationship||''}</div></div>
+        <div style="background:rgba(44,35,24,.4);border-radius:8px;padding:12px"><div style="font-size:13px;color:var(--gold);margin-bottom:4px">健康</div><div style="font-size:14px">${r.health||''}</div></div>
+      </div>
+    </div>
+  `;
+}
+
+// ============ Dream Page ============
+function renderDream(el) {
+  el.innerHTML = `
+    <h1 class="font-display" style="font-size:2rem;color:var(--gold);text-align:center;margin-bottom:8px">周公解梦</h1>
+    <p style="text-align:center;color:var(--paper-dark);font-size:14px;margin-bottom:24px">百梦皆有意 · 古今相参证</p>
+    <div class="card">
+      <label>请描述您梦中所见</label>
+      <textarea id="dreamDesc" placeholder="描述您的梦境..." style="margin-bottom:16px"></textarea>
+      <div style="text-align:center"><button class="btn btn-primary" onclick="interpretDream()">解梦</button></div>
+    </div>
+    <div id="dreamResult" style="margin-top:12px"></div>
+  `;
+}
+
+async function interpretDream() {
+  const desc = document.getElementById('dreamDesc').value;
+  if (!desc) { alert('请描述您的梦境'); return; }
+  const r = await api('/dream/interpret', { description: desc });
+  if (!r) return;
+  const el = document.getElementById('dreamResult');
+  el.innerHTML = `
+    <div class="card" style="border-color:rgba(201,160,92,.4)">
+      <div style="text-align:center;margin-bottom:12px"><div class="badge badge-gold" style="font-size:14px">梦境评级：${r.lucky_level}</div></div>
+      <div style="background:rgba(44,35,24,.4);border-radius:12px;padding:16px;margin-bottom:12px"><div style="font-size:14px;line-height:1.8">${r.interpretation}</div></div>
+      <div style="background:rgba(201,160,92,.05);border:1px solid rgba(201,160,92,.2);border-radius:12px;padding:16px"><div style="font-size:14px;color:var(--paper-dark);line-height:1.8">${r.advice}</div></div>
+    </div>
+  `;
+}
+
+// ============ Meditation Page ============
+function renderMeditation(el) {
+  el.innerHTML = `<div class="loading">加载禅修曲目...</div>`;
+  loadMeditation();
+}
+
+async function loadMeditation() {
+  const d = await api('/meditation/catalog');
+  const el = document.getElementById('app');
+  if (!d || !d.tracks) { el.innerHTML = '<div class="loading">加载失败</div>'; return; }
+  el.innerHTML = `
+    <h1 class="font-display" style="font-size:2rem;color:var(--gold);text-align:center;margin-bottom:8px">静心禅坐</h1>
+    <p style="text-align:center;color:var(--paper-dark);font-size:14px;margin-bottom:8px">${d.quote?'"'+d.quote.text+'" —— '+d.quote.source:''}</p>
+    <div class="card">
+      <h2 class="font-display" style="font-size:1.2rem;color:var(--gold);margin-bottom:12px">🎵 禅修曲目</h2>
+      <div class="track-list">${d.tracks.map(t=>`<div class="track-item ${currentTrack&&currentTrack.id===t.id?'playing':''}" onclick="playTrack('${t.id}','${t.title}','${t.subtitle}','${t.icon}','${t.url}',${t.duration})"><div class="track-icon" style="background:${t.color}20;border:1px solid ${t.color}40">${t.icon}</div><div class="track-info"><div class="track-title">${t.title}</div><div class="track-subtitle">${t.subtitle}</div></div><div class="track-duration">${Math.floor(t.duration/60)}:${(t.duration%60).toString().padStart(2,'0')}</div></div>`).join('')}</div>
+    </div>
+    ${d.guided?`<div class="card" style="margin-top:12px"><h2 class="font-display" style="font-size:1.2rem;color:var(--gold);margin-bottom:12px">🧘 引导禅修</h2>${d.guided.map(g=>`<div style="margin-bottom:16px"><div class="font-display" style="font-size:1rem;color:var(--paper)">${g.title} · ${g.subtitle} (${Math.floor(g.duration/60)}分钟)</div><ol style="margin-top:8px;padding-left:20px">${g.steps.map(s=>`<li style="font-size:13px;color:var(--paper-dark);margin-bottom:4px">${s}</li>`).join('')}</ol></div>`).join('')}</div>`:''}
+  `;
+}
+
+function playTrack(id, title, subtitle, icon, url, duration) {
+  currentTrack = {id, title, subtitle, icon, url, duration};
+  audio.src = url;
+  audio.play();
+  isPlaying = true;
+  updatePlayer();
+}
+
+function updatePlayer() {
+  const bar = document.getElementById('playerBar');
+  if (!currentTrack) { bar.classList.remove('show'); return; }
+  bar.classList.add('show');
+  document.getElementById('playerIcon').textContent = currentTrack.icon;
+  document.getElementById('playerTitle').textContent = currentTrack.title;
+  document.getElementById('playerSubtitle').textContent = isPlaying ? '正在播放' : '已暂停';
+  document.getElementById('playPauseBtn').textContent = isPlaying ? '⏸' : '▶';
+}
+
+function togglePlay() {
+  if (!currentTrack) return;
+  if (isPlaying) { audio.pause(); } else { audio.play(); }
+  isPlaying = !isPlaying;
+  updatePlayer();
+}
+
+function stopMusic() {
+  audio.pause();
+  audio.currentTime = 0;
+  currentTrack = null;
+  isPlaying = false;
+  updatePlayer();
+}
+
+function toggleMusic() {
+  if (currentTrack) { togglePlay(); return; }
+  if (tracks.length > 0) {
+    const t = tracks[Math.floor(Math.random()*tracks.length)];
+    playTrack(t.id, t.title, t.subtitle, t.icon, t.url, t.duration);
+  }
+}
+
+audio.addEventListener('timeupdate', () => {
+  if (currentTrack && currentTrack.duration) {
+    const pct = (audio.currentTime / currentTrack.duration) * 100;
+    document.getElementById('playerProgress').style.width = pct + '%';
+  }
+});
+
+audio.addEventListener('ended', () => {
+  if (tracks.length > 0) {
+    const others = tracks.filter(t => !currentTrack || t.id !== currentTrack.id);
+    const next = others[Math.floor(Math.random()*others.length)] || tracks[0];
+    playTrack(next.id, next.title, next.subtitle, next.icon, next.url, next.duration);
+  }
+});
+
+// ============ Other Pages ============
+function renderPalmistry(el) {
+  el.innerHTML = `
+    <h1 class="font-display" style="font-size:2rem;color:var(--gold);text-align:center;margin-bottom:8px">看手相</h1>
+    <p style="text-align:center;color:var(--paper-dark);font-size:14px;margin-bottom:24px">上传手相照片，AI 为您解读手纹命理</p>
+    <div class="card"><img src="/static/images/palm-guide.png" style="width:100%;border-radius:12px;margin-bottom:16px"><p style="text-align:center;color:var(--paper-dark);font-size:13px">手相图解指南</p></div>
+  `;
+}
+
+function renderNaming(el) {
+  el.innerHTML = `
+    <h1 class="font-display" style="font-size:2rem;color:var(--gold);text-align:center;margin-bottom:8px">宝宝起名</h1>
+    <p style="text-align:center;color:var(--paper-dark);font-size:14px;margin-bottom:24px">五行 · 音韵 · 笔画 · 典故，为您精选好名</p>
+    <div class="card">
+      <label>宝宝姓氏</label><input type="text" id="namingSurname" placeholder="请输入姓氏" style="margin-bottom:16px">
+      <label>性别</label>
+      <div style="display:flex;gap:8px;margin-bottom:16px"><button class="btn btn-gold">男</button><button class="btn btn-secondary">女</button></div>
+      <label>起名风格</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+        <button class="btn btn-secondary">诗意</button><button class="btn btn-secondary">刚毅</button>
+        <button class="btn btn-secondary">儒雅</button><button class="btn btn-secondary">清逸</button>
+        <button class="btn btn-secondary">典雅</button><button class="btn btn-secondary">温润</button>
+      </div>
+      <div style="text-align:center"><button class="btn btn-primary">请师父起名</button></div>
+    </div>
+  `;
+}
+
+function renderDivination(el) {
+  el.innerHTML = `
+    <h1 class="font-display" style="font-size:2rem;color:var(--gold);text-align:center;margin-bottom:8px">六爻占卜</h1>
+    <p style="text-align:center;color:var(--paper-dark);font-size:14px;margin-bottom:24px">诚心一问，卦象自现</p>
+    <div class="card">
+      <label>所问之事</label>
+      <textarea id="divQuestion" placeholder="请写下您想问的事情..." style="margin-bottom:16px"></textarea>
+      <div style="text-align:center"><button class="btn btn-primary" onclick="divinate()">起卦</button></div>
+    </div>
+    <div id="divResult" style="margin-top:12px"></div>
+  `;
+}
+
+async function divinate() {
+  const q = document.getElementById('divQuestion').value;
+  if (!q) { alert('请输入所问之事'); return; }
+  const r = await api('/divination/hexagram', { question: q });
+  if (!r) return;
+  document.getElementById('divResult').innerHTML = `
+    <div class="card" style="border-color:rgba(201,160,92,.4)">
+      <div style="text-align:center;margin-bottom:16px">
+        <div class="font-display" style="font-size:2rem;color:var(--gold)">${r.hexagram}</div>
+        <div style="font-size:14px;color:var(--paper-dark);margin-top:4px">${r.description}</div>
+      </div>
+      <div style="background:rgba(44,35,24,.4);border-radius:12px;padding:16px"><div style="white-space:pre-line;font-size:14px;line-height:1.8">${r.interpretation}</div></div>
+    </div>
+  `;
+}
+
+// ============ Share Modal ============
+function showShareModal() {
+  alert('分享返佣功能：分享专属链接给朋友，朋友下单后获得奖励！');
+}
+
+// ============ Route Init ============
+window.addEventListener('hashchange', () => {
+  const path = window.location.hash.slice(1) || '/';
+  if (path !== currentRoute) navigate(path);
+});
+</script>
+</body>
+</html>

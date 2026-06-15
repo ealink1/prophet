@@ -1,0 +1,19 @@
+# Binaries
+prophet
+*.exe
+
+# Database
+data/*.db
+
+# Go
+go.sum
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
