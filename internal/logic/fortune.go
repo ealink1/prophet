@@ -1,8 +1,9 @@
-package services
+package logic
 
 import (
 	"fmt"
 	"math/rand"
+	"strings"
 	"time"
 )
 
@@ -17,9 +18,9 @@ type LotteryResult struct {
 }
 
 var signData = []struct {
-	Level string
-	Title string
-	Poem  string
+	Level  string
+	Title  string
+	Poem   string
 	Advice string
 }{
 	{"上上", "鲤鱼化龙", "一跃龙门身价高，春风得意马蹄忙。前程万里从此始，功名富贵自然来。\n\n此签为鲤鱼化龙之象，大吉大利。凡事谋望，皆能如愿。", "把握时机，大胆行动，必有所成。"},
@@ -97,19 +98,19 @@ func BaziAnalyze(year, month, day int, shichen, gender, master string) map[strin
 
 	result := map[string]interface{}{
 		"bazi": map[string]string{
-			"year":  yearGZ,
-			"month": monthGZ,
-			"day":   dayGZ,
+			"year":    yearGZ,
+			"month":   monthGZ,
+			"day":     dayGZ,
 			"shichen": shichen,
 		},
-		"sheng_xiao": shengXiao[zhiIdx],
-		"ben_ming":   benMing,
-		"wuxing":     []string{wuxing[ganIdx%5], wuxing[(ganIdx+1)%5], wuxing[(ganIdx+2)%5], wuxing[(ganIdx+3)%5], wuxing[(ganIdx+4)%5]},
-		"personality": personality,
-		"career":      career,
-		"wealth":      wealth,
+		"sheng_xiao":   shengXiao[zhiIdx],
+		"ben_ming":     benMing,
+		"wuxing":       []string{wuxing[ganIdx%5], wuxing[(ganIdx+1)%5], wuxing[(ganIdx+2)%5], wuxing[(ganIdx+3)%5], wuxing[(ganIdx+4)%5]},
+		"personality":  personality,
+		"career":       career,
+		"wealth":       wealth,
 		"relationship": relationship,
-		"health":      health,
+		"health":       health,
 	}
 	return result
 }
@@ -134,7 +135,7 @@ func InterpretDream(description string) map[string]interface{} {
 	interpretation := "此梦反映您近期的心境状态。"
 
 	for keyword, interp := range interpretations {
-		if contains(description, keyword) {
+		if strings.Contains(description, keyword) {
 			interpretation = interp
 			break
 		}
@@ -147,10 +148,6 @@ func InterpretDream(description string) map[string]interface{} {
 	}
 }
 
-func contains(s, substr string) bool {
-	return len(s) > 0 && len(substr) > 0 && (s == substr || len(s) > len(substr) && (s[0:len(substr)] == substr || contains(s[1:], substr)))
-}
-
 func InterpretDivination(question string) map[string]interface{} {
 	hexagrams := []string{"乾", "坤", "屯", "蒙", "需", "讼", "师", "比", "小畜", "履", "泰", "否", "同人", "大有", "谦", "豫", "随", "蛊", "临", "观", "噬嗑", "贲", "剥", "复", "无妄", "大畜", "颐", "大过", "坎", "离"}
 	descriptions := []string{"元亨利贞", "元亨利牝马之贞", "元亨利贞勿用有攸往", "亨匪我求童蒙", "有孚光亨贞吉", "有孚窒惕中吉", "贞丈人吉无咎", "原筮元永贞无咎", "密云不雨自我西郊", "履虎尾不咥人亨", "小往大来吉亨", "否之匪人不利君子贞", "同人于野亨", "元亨", "亨君子有终", "利建侯行师", "元亨利贞无咎", "元亨利涉大川", "元亨利贞至于八月有凶", "盥而不荐有孚颙若", "亨利用狱", "亨小利有攸往", "不利有攸往", "亨出入无疾朋来无咎", "元亨利贞其匪正有眚", "利贞不家食吉", "贞吉观颐自求口实", "栋桡利有攸往亨", "习坎有孚维心亨行有尚", "利贞亨畜牝牛吉"}
@@ -159,9 +156,9 @@ func InterpretDivination(question string) map[string]interface{} {
 	idx := rand.Intn(len(hexagrams))
 
 	return map[string]interface{}{
-		"hexagram":      hexagrams[idx],
-		"description":   descriptions[idx],
+		"hexagram":       hexagrams[idx],
+		"description":    descriptions[idx],
 		"interpretation": fmt.Sprintf("您所问之事，得「%s」卦，卦辞：%s。\n\n此卦象暗示当前形势需要审慎判断。建议您多方考量，不可贸然行事。若能保持冷静，终能化险为夷。", hexagrams[idx], descriptions[idx]),
-		"advice":        "三思而后行，谨慎决策。",
+		"advice":         "三思而后行，谨慎决策。",
 	}
 }

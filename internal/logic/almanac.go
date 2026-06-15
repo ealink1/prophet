@@ -1,4 +1,4 @@
-package services
+package logic
 
 import (
 	"fmt"
@@ -7,20 +7,20 @@ import (
 )
 
 type AlmanacData struct {
-	Solar      SolarDate      `json:"solar"`
-	Lunar      LunarDate      `json:"lunar"`
-	Ganzhi     GanzhiDate     `json:"ganzhi"`
-	Overall    OverallLevel   `json:"overall_level"`
-	Jieqi      JieqiInfo      `json:"jieqi"`
-	Yi         []string       `json:"yi"`
-	Ji         []string       `json:"ji"`
-	Shen       ShenSha        `json:"shen"`
-	Chong      string         `json:"chong"`
-	TaiPos     string         `json:"tai_position"`
-	Xiu        string         `json:"xiu"`
-	XiuLuck    string         `json:"xiu_luck"`
-	Zhixing    string         `json:"zhixing"`
-	Shichen    []ShichenInfo  `json:"shichen"`
+	Solar   SolarDate     `json:"solar"`
+	Lunar   LunarDate     `json:"lunar"`
+	Ganzhi  GanzhiDate    `json:"ganzhi"`
+	Overall OverallLevel  `json:"overall_level"`
+	Jieqi   JieqiInfo     `json:"jieqi"`
+	Yi      []string      `json:"yi"`
+	Ji      []string      `json:"ji"`
+	Shen    ShenSha       `json:"shen"`
+	Chong   string        `json:"chong"`
+	TaiPos  string        `json:"tai_position"`
+	Xiu     string        `json:"xiu"`
+	XiuLuck string        `json:"xiu_luck"`
+	Zhixing string        `json:"zhixing"`
+	Shichen []ShichenInfo `json:"shichen"`
 }
 
 type SolarDate struct {
@@ -32,10 +32,10 @@ type SolarDate struct {
 }
 
 type LunarDate struct {
-	YearInChinese   string `json:"year_in_chinese"`
-	MonthInChinese  string `json:"month_in_chinese"`
-	DayInChinese    string `json:"day_in_chinese"`
-	YearZodiac      string `json:"year_zodiac"`
+	YearInChinese  string `json:"year_in_chinese"`
+	MonthInChinese string `json:"month_in_chinese"`
+	DayInChinese   string `json:"day_in_chinese"`
+	YearZodiac     string `json:"year_zodiac"`
 }
 
 type GanzhiDate struct {
@@ -78,12 +78,10 @@ var (
 	lunarYearName  = []string{"零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"}
 )
 
-// 简化的农历计算（基于查表法）
 func ComputeAlmanac(dateStr string) *AlmanacData {
 	t, _ := time.Parse("2006-01-02", dateStr)
 	data := &AlmanacData{}
 
-	// 公历
 	data.Solar = SolarDate{
 		Year:        t.Year(),
 		Month:       int(t.Month()),
@@ -92,31 +90,26 @@ func ComputeAlmanac(dateStr string) *AlmanacData {
 		WeekdayFull: weekdays[t.Weekday()],
 	}
 
-	// 干支年
 	yearGanIdx := (t.Year() - 4) % 10
 	yearZhiIdx := (t.Year() - 4) % 12
 	data.Ganzhi.Year = tianGan[yearGanIdx] + diZhi[yearZhiIdx]
 	data.Lunar.YearZodiac = shengXiao[yearZhiIdx]
 
-	// 干支月
 	monthGanIdx := (yearGanIdx*2 + int(t.Month())) % 10
 	monthZhiIdx := (int(t.Month()) + 1) % 12
 	data.Ganzhi.Month = tianGan[monthGanIdx] + diZhi[monthZhiIdx]
 
-	// 干支日（简化算法）
-	dayOffset := t.Unix()/86400
+	dayOffset := t.Unix() / 86400
 	dayGanIdx := int((dayOffset + 49) % 10)
 	dayZhiIdx := int((dayOffset + 49) % 12)
 	data.Ganzhi.Day = tianGan[dayGanIdx] + diZhi[dayZhiIdx]
 
-	// 纳音
 	nayinIdx := (yearGanIdx*12 + yearZhiIdx) % 30
 	if nayinIdx < 0 {
 		nayinIdx += 30
 	}
 	data.Ganzhi.Nayin = nayinList[nayinIdx]
 
-	// 农历（简化）
 	lunarMonth := (int(t.Month()) + 10) % 12
 	data.Lunar.MonthInChinese = lunarMonthName[lunarMonth] + "月"
 	lunarDay := t.Day()
@@ -132,34 +125,35 @@ func ComputeAlmanac(dateStr string) *AlmanacData {
 		data.Lunar.YearInChinese += lunarYearName[idx]
 	}
 
-	// 节气
 	data.Jieqi = computeJieqi(t)
-
-	// 宜忌
 	data.Yi, data.Ji = computeYiJi(dayGanIdx, dayZhiIdx, t)
-
-	// 综合评级
 	data.Overall = computeOverall(data.Yi, data.Ji)
-
-	// 神煞
 	data.Shen = computeShenSha(dayGanIdx, dayZhiIdx)
-
-	// 冲煞
 	data.Chong = fmt.Sprintf("%s日冲%s", data.Ganzhi.Day, diZhi[(dayZhiIdx+6)%12])
-
-	// 胎神方位
 	data.TaiPos = computeTaiPosition(dayZhiIdx)
-
-	// 28宿
 	data.Xiu, data.XiuLuck = computeXiu(t)
-
-	// 12建除
 	data.Zhixing = computeZhixing(dayZhiIdx)
-
-	// 时辰
 	data.Shichen = computeShichen(dayGanIdx)
 
 	return data
+}
+
+func ComputeWeekAlmanac() []map[string]interface{} {
+	now := time.Now()
+	result := make([]map[string]interface{}, 7)
+	weekdaysShort := []string{"一", "二", "三", "四", "五", "六", "日"}
+
+	for i := 0; i < 7; i++ {
+		d := now.AddDate(0, 0, i)
+		data := ComputeAlmanac(d.Format("2006-01-02"))
+		result[i] = map[string]interface{}{
+			"date":      d.Format("2006-01-02"),
+			"weekday":   weekdaysShort[(d.Weekday()+6)%7],
+			"lunar_day": data.Lunar.DayInChinese,
+			"level":     data.Overall.Level,
+		}
+	}
+	return result
 }
 
 func computeJieqi(t time.Time) JieqiInfo {
@@ -296,24 +290,6 @@ func computeShichen(dayGanIdx int) []ShichenInfo {
 			Lucky:  luckPattern[i],
 			Ganzhi: tianGan[ganIdx] + diZhi[zhiIdx],
 			Chong:  fmt.Sprintf("冲%s", diZhi[(zhiIdx+6)%12]),
-		}
-	}
-	return result
-}
-
-func ComputeWeekAlmanac() []map[string]interface{} {
-	now := time.Now()
-	result := make([]map[string]interface{}, 7)
-	weekdaysShort := []string{"一", "二", "三", "四", "五", "六", "日"}
-
-	for i := 0; i < 7; i++ {
-		d := now.AddDate(0, 0, i)
-		data := ComputeAlmanac(d.Format("2006-01-02"))
-		result[i] = map[string]interface{}{
-			"date":      d.Format("2006-01-02"),
-			"weekday":   weekdaysShort[(d.Weekday()+6)%7],
-			"lunar_day": data.Lunar.DayInChinese,
-			"level":     data.Overall.Level,
 		}
 	}
 	return result
